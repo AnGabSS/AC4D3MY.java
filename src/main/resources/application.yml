@@ -1,0 +1,37 @@
+server:
+  port: 8080
+spring:
+  servlet:
+    multipart:
+      max-file-size: 528MB
+      max-request-size: 528MB
+  application:
+    name: Nulog Academy
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:academy}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+
+academy:
+  secret_key: ${JWT_SECRET_KEY}
+  jwt_issuer: ${JWT_ISSUER}
+  front_url: ${FRONT_URL}
+  media_path: ${MEDIA_PATH}
