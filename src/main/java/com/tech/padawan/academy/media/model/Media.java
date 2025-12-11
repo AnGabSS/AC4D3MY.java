@@ -4,11 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "medias")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
+@SuperBuilder
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +23,7 @@ public class Media {
     private Long id;
     @NotBlank(message = "Name is required")
     private String name;
-    @NotNull(message = "Type is required")
-    private MediaType type;
+
     @NotBlank(message = "URL is required")
     private String url;
 

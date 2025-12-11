@@ -3,8 +3,10 @@ package com.tech.padawan.academy.media.service;
 import com.tech.padawan.academy.global.AcademyConfiguration;
 import com.tech.padawan.academy.global.exceptions.StorageException;
 import com.tech.padawan.academy.media.dto.CreateMediaDTO;
+import com.tech.padawan.academy.media.model.Image;
 import com.tech.padawan.academy.media.model.Media;
 import com.tech.padawan.academy.media.model.MediaType;
+import com.tech.padawan.academy.media.model.Video;
 import com.tech.padawan.academy.media.repository.MediaRepository;
 import com.tech.padawan.academy.media.service.exception.MediaAlreadyExistsException;
 import org.springframework.core.io.Resource;
@@ -44,16 +46,12 @@ public class MediaService implements IMediaService {
             // Define o diretório baseado no Tipo (Ex: /uploads/VIDEO)
             Path directoryPath = this.rootLocation.resolve(dto.type().toString());
 
-            // Cria o diretório se não existir
             if (!Files.exists(directoryPath)) {
                 Files.createDirectories(directoryPath);
             }
 
-            // Define o caminho final (Ex: /uploads/VIDEO/aula01.mp4)
-            // Normaliza o nome para evitar nomes como "../arquivo.txt"
             Path destinationFile = directoryPath.resolve(dto.name()).normalize();
 
-            // Segurança: Garante que o arquivo está sendo salvo DENTRO da pasta permitida
             if (!destinationFile.getParent().equals(directoryPath)) {
                 throw new StorageException("Cannot store file outside current directory.");
             }
@@ -66,18 +64,32 @@ public class MediaService implements IMediaService {
                 Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            Media newMedia = Media.builder()
-                    .name(dto.name())
-                    .type(dto.type())
-                    .url(destinationFile.toString())
-                    .build();
+            Media newMedia = buildMediaEntity(dto, destinationFile.toString());
 
             return repository.save(newMedia);
 
-        } catch (MediaAlreadyExistsException e) {
-            throw e;
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file.", e);
+        }
+    }
+
+    private Media buildMediaEntity(CreateMediaDTO dto, String url){
+        switch (dto.type()){
+            case VIDEO ->  {
+                return Video.builder()
+                        .name(dto.name())
+                        .url(url)
+                        .build();
+            }
+            case IMAGE -> {
+                return Image.builder()
+                        .name(dto.name())
+                        .url(url)
+                        .build();
+            }
+            case null, default -> {
+                throw new IllegalArgumentException("Unsupported media type: " + dto.type());
+            }
         }
     }
 
@@ -86,14 +98,12 @@ public class MediaService implements IMediaService {
         try {
             Path filesDir = this.rootLocation.resolve(type.toString());
 
-            // Se a pasta não existe (nenhum arquivo desse tipo foi salvo), retorna stream vazio
             if (!Files.exists(filesDir)) {
                 return Stream.empty();
             }
 
             return Files.walk(filesDir, 1)
                     .filter(path -> !path.equals(filesDir))
-                    // Retorna o caminho relativo (Ex: VIDEO/meuvideo.mp4) em vez do absoluto
                     .map(this.rootLocation::relativize);
 
         } catch (IOException e) {
