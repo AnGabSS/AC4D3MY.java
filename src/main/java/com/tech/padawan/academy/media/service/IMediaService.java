@@ -12,4 +12,6 @@ public interface IMediaService {
     Media create(CreateMediaDTO dto);
     Stream<Path> loadAll(MediaType type);
     Resource load(String filename);
+    Media findByName(String name);
+    void deleteByName(String name);
 }

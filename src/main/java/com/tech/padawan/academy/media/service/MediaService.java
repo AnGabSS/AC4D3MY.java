@@ -126,4 +126,14 @@ public class MediaService implements IMediaService {
             throw new StorageException("Could not read file: " + filename, e);
         }
     }
+
+    @Override
+    public Media findByName(String name) {
+        return repository.findByName(name);
+    }
+
+    @Override
+    public void deleteByName(String name) {
+        repository.deleteByName(name);
+    }
 }

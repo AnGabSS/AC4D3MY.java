@@ -7,6 +7,10 @@ build/
 
 .env
 
+
+IMAGE/
+VIDEO/
+
 ### STS ###
 .apt_generated
 .classpath
