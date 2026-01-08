@@ -13,7 +13,7 @@ public interface IPlaylistService {
     Playlist addVideo(Long id, Video video);
     Playlist removeVideo(Long playlistId, Long videoId);
     List<ListPlaylistDTO> list();
-    Playlist getById(Long id);
+    ListPlaylistDTO getById(Long id);
     Playlist update(Long id, FormPlaylistDTO dto);
     void delete(Long id);
 

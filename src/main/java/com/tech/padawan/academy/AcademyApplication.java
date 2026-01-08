@@ -13,4 +13,5 @@ public class AcademyApplication {
 		SpringApplication.run(AcademyApplication.class, args);
 	}
 
+
 }

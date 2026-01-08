@@ -1,0 +1,1 @@
+ALTER TABLE playlists ALTER COLUMN thumbnail_path DROP NOT NULL;

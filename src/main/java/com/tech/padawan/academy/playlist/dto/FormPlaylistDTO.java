@@ -5,7 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public record FormPlaylistDTO(
         String name,
-        String department,
-        MultipartFile thumbnail
-){
+        String department){
 }

@@ -28,7 +28,6 @@ public class Playlist {
     private String name;
     @NotNull(message = "Department is required")
     private String department;
-    @NotNull(message = "Thumbnail is required")
     private String thumbnailPath;
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Video> videos;

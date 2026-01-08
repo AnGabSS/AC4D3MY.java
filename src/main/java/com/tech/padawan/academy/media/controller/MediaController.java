@@ -24,10 +24,6 @@ public class MediaController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<Media> create(@ModelAttribute CreateMediaDTO dto){
-        return ResponseEntity.ok(service.create(dto));
-    };
 
     @GetMapping
     public ResponseEntity<Stream<Path>> getAllFiles(@RequestParam(value = "type", defaultValue = "IMAGE")MediaType type){

@@ -9,6 +9,7 @@ import com.tech.padawan.academy.media.model.MediaType;
 import com.tech.padawan.academy.media.model.Video;
 import com.tech.padawan.academy.media.repository.MediaRepository;
 import com.tech.padawan.academy.media.service.exception.MediaAlreadyExistsException;
+import com.tech.padawan.academy.playlist.model.Playlist;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -73,12 +74,19 @@ public class MediaService implements IMediaService {
         }
     }
 
-    private Media buildMediaEntity(CreateMediaDTO dto, String url){
-        switch (dto.type()){
-            case VIDEO ->  {
+    // Adicione o parâmetro Long playlistId
+    private Media buildMediaEntity(CreateMediaDTO dto, String url) {
+        switch (dto.type()) {
+            case VIDEO -> {
+                Playlist playlistRef = null;
+                if (dto.playlistId() != null) {
+                    playlistRef = Playlist.builder().id(dto.playlistId()).build();
+                }
+
                 return Video.builder()
                         .name(dto.name())
                         .url(url)
+                        .playlist(playlistRef)
                         .build();
             }
             case IMAGE -> {

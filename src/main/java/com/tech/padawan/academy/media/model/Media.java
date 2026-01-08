@@ -1,5 +1,6 @@
 package com.tech.padawan.academy.media.model;
 
+import com.tech.padawan.academy.playlist.model.Playlist;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,5 +27,10 @@ public class Media {
 
     @NotBlank(message = "URL is required")
     private String url;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "playlist_id")
+    private Playlist playlist;
 
 }

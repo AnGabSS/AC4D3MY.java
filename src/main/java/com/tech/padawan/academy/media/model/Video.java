@@ -15,7 +15,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Video extends Media {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playlist_id")
-    private Playlist playlist;
 }

@@ -28,16 +28,9 @@ public class PlaylistService implements IPlaylistService {
 
     @Override
     public Playlist create(FormPlaylistDTO dto) {
-        CreateMediaDTO mediaDTO = new CreateMediaDTO(
-                "Thumbnail for playlist - " + dto.name(),
-                MediaType.IMAGE,
-                dto.thumbnail()
-        );
-        Media image = mediaService.create(mediaDTO);
         Playlist playlistToBeCreated = Playlist.builder()
                 .name(dto.name())
                 .department(dto.department())
-                .thumbnailPath(image.getUrl())
                 .build();
         return repository.save(playlistToBeCreated);
     }
@@ -63,8 +56,9 @@ public class PlaylistService implements IPlaylistService {
     }
 
     @Override
-    public Playlist getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Playlist not exists"));
+    public ListPlaylistDTO getById(Long id) {
+        Playlist playlist = repository.findById(id).orElseThrow(() -> new RuntimeException("Playlist not exists"));
+        return ListPlaylistDTO.fromEntity(playlist);
     }
 
     @Override
@@ -72,16 +66,6 @@ public class PlaylistService implements IPlaylistService {
         Playlist playlist = repository.findById(id).orElseThrow(() -> new RuntimeException("Playlist not exists"));
         playlist.setName(dto.name());
         playlist.setDepartment(dto.department());
-        if(!dto.thumbnail().isEmpty()){
-            mediaService.deleteByName("Thumbnail for playlist - " + dto.name());
-            CreateMediaDTO mediaDTO = new CreateMediaDTO(
-            "Thumbnail for playlist - " + playlist.getName(),
-                 MediaType.IMAGE,
-                 dto.thumbnail()
-            );
-            Media image = mediaService.create(mediaDTO);
-            playlist.setThumbnailPath(image.getUrl());
-        }
         return repository.save(playlist);
     }
 

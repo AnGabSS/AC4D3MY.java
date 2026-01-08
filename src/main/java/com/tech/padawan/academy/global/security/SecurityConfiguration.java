@@ -22,6 +22,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -30,8 +31,8 @@ public class SecurityConfiguration {
 
     private final JwtTokenService jwtTokenService;
     private final UserRepository userRepository;
-
     private final String FRONT_URL;
+
 
     public static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/users",
@@ -101,6 +102,7 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS",  "HEAD", "TRACE", "CONNECT"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control"));
+        configuration.setAllowedOrigins(Collections.singletonList(FRONT_URL));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
