@@ -6,6 +6,7 @@ import com.tech.padawan.academy.media.model.Video;
 import com.tech.padawan.academy.media.service.IMediaService;
 import com.tech.padawan.academy.playlist.dto.AddVideoToPlaylistDTO;
 import com.tech.padawan.academy.playlist.dto.FormPlaylistDTO;
+import com.tech.padawan.academy.playlist.dto.ListPlaylistByDepartmentDTO;
 import com.tech.padawan.academy.playlist.dto.ListPlaylistDTO;
 import com.tech.padawan.academy.playlist.model.Playlist;
 import com.tech.padawan.academy.playlist.service.IPlaylistService;
@@ -44,7 +45,7 @@ public class PlaylistController {
 
     @GetMapping
     @Operation(summary = "Listar Playlists", description = "Retorna uma lista resumida de todas as playlists")
-    public ResponseEntity<List<ListPlaylistDTO>> list() {
+    public ResponseEntity<List<ListPlaylistByDepartmentDTO>> list() {
         return ResponseEntity.ok(service.list());
     }
 

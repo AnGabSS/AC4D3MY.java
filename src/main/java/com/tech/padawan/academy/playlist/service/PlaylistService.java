@@ -1,13 +1,10 @@
 package com.tech.padawan.academy.playlist.service;
 
-import com.tech.padawan.academy.media.dto.CreateMediaDTO;
-import com.tech.padawan.academy.media.model.Image;
-import com.tech.padawan.academy.media.model.Media;
-import com.tech.padawan.academy.media.model.MediaType;
+
 import com.tech.padawan.academy.media.model.Video;
 import com.tech.padawan.academy.media.service.IMediaService;
-import com.tech.padawan.academy.media.service.MediaService;
 import com.tech.padawan.academy.playlist.dto.FormPlaylistDTO;
+import com.tech.padawan.academy.playlist.dto.ListPlaylistByDepartmentDTO;
 import com.tech.padawan.academy.playlist.dto.ListPlaylistDTO;
 import com.tech.padawan.academy.playlist.model.Playlist;
 import com.tech.padawan.academy.playlist.repository.PlaylistRepository;
@@ -50,9 +47,9 @@ public class PlaylistService implements IPlaylistService {
     }
 
     @Override
-    public List<ListPlaylistDTO> list() {
+    public List<ListPlaylistByDepartmentDTO> list() {
         List<Playlist> videos = repository.findAll();
-        return videos.stream().map(ListPlaylistDTO::fromEntity).toList();
+        return ListPlaylistByDepartmentDTO.fromEntity(videos);
     }
 
     @Override
