@@ -27,11 +27,10 @@ import java.util.stream.Stream;
 public class MediaService implements IMediaService {
 
     private final MediaRepository repository;
-    private final Path rootLocation; // Alterei de String para Path para facilitar o uso
+    private final Path rootLocation;
 
     public MediaService(MediaRepository repository, AcademyConfiguration configuration) {
         this.repository = repository;
-        // Já converte para Path no construtor para evitar chamadas repetitivas de Path.of
         this.rootLocation = Path.of(configuration.media_path());
     }
 
@@ -44,7 +43,6 @@ public class MediaService implements IMediaService {
                 throw new StorageException("Failed to store empty file.");
             }
 
-            // Define o diretório baseado no Tipo (Ex: /uploads/VIDEO)
             Path directoryPath = this.rootLocation.resolve(dto.type().toString());
 
             if (!Files.exists(directoryPath)) {
@@ -74,7 +72,6 @@ public class MediaService implements IMediaService {
         }
     }
 
-    // Adicione o parâmetro Long playlistId
     private Media buildMediaEntity(CreateMediaDTO dto, String url) {
         switch (dto.type()) {
             case VIDEO -> {

@@ -1,6 +1,7 @@
 package com.tech.padawan.academy.playlist.service;
 
 
+import com.tech.padawan.academy.global.utils.UrlGeneratorService;
 import com.tech.padawan.academy.media.model.Video;
 import com.tech.padawan.academy.media.service.IMediaService;
 import com.tech.padawan.academy.playlist.dto.FormPlaylistDTO;
@@ -17,10 +18,12 @@ public class PlaylistService implements IPlaylistService {
 
     private final PlaylistRepository repository;
     private final IMediaService mediaService;
+    private final UrlGeneratorService urlGeneratorService;
 
-    public PlaylistService(PlaylistRepository repository, IMediaService mediaService){
+    public PlaylistService(PlaylistRepository repository, IMediaService mediaService, UrlGeneratorService urlGeneratorService){
         this.repository = repository;
         this.mediaService = mediaService;
+        this.urlGeneratorService = urlGeneratorService;
     }
 
     @Override
@@ -49,13 +52,13 @@ public class PlaylistService implements IPlaylistService {
     @Override
     public List<ListPlaylistByDepartmentDTO> list() {
         List<Playlist> videos = repository.findAll();
-        return ListPlaylistByDepartmentDTO.fromEntity(videos);
+        return ListPlaylistByDepartmentDTO.fromEntity(videos, urlGeneratorService);
     }
 
     @Override
     public ListPlaylistDTO getById(Long id) {
         Playlist playlist = repository.findById(id).orElseThrow(() -> new RuntimeException("Playlist not exists"));
-        return ListPlaylistDTO.fromEntity(playlist);
+        return ListPlaylistDTO.fromEntity(playlist, urlGeneratorService);
     }
 
     @Override
